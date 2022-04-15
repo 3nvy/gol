@@ -18,10 +18,15 @@ By making use of an infinite canvas, you can create complex patterns and let the
 ## Controls
 
 `Mouse Right-Click` - Adds/Removes cells
+
 `Mouse Left-Click-Drag` - Moves around the canvas offset
+
 `Zoom Slider` - Controls the canvas zoom level
+
 `Speed Slider` - Controls the speed at which the game is played
+
 `Start/Stop button` - Controls the game active status
+
 `Load Patter` - Loads a pre-defined pattern into the board (WIP) 
 
 ## Tech Stack
