@@ -27,7 +27,7 @@ By making use of an infinite canvas, you can create complex patterns and let the
 
 `Start/Stop button` - Controls the game active status
 
-`Load Patter` - Loads a pre-defined pattern into the board (WIP) 
+`Load Pattern` - Loads a pre-defined pattern into the board from an RLE file
 
 ## Tech Stack
 

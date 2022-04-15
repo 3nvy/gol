@@ -1,3 +1,4 @@
+import InputFileReader from "./FileReader";
 import { useSelector, useDispatch } from "react-redux";
 import { setRunningState, setStep, setSpeed } from "./store/gameControlsSlice";
 import { setPattern } from "./store/patternSlice";
@@ -35,18 +36,18 @@ const GameControls = () => {
 
   const onRunningBtnClick = () => dispatch(setRunningState(!isRunning));
 
-  const onPatternLoadBtnClick = () => {
-    dispatch(setRunningState(false));
-
-    let pattern = prompt("Input Pattern");
-    if (pattern != null) {
-      readPattern(pattern);
-    }
-  };
+  const onPatternLoaded = (content) => {
+    const patternData = content.split(/\r?\n/);
+    const patternName = patternData.find(ln => ln.includes('#N'));
+    const pattern = patternData.filter(ln => !['#', 'x'].includes(ln[0])).join('');
+    readPattern(pattern);
+    alert(`Pattern ${patternName} Loaded!`)
+  }
 
   const onStepChange = (evt) => dispatch(setStep(+evt.target.value));
 
   const onSpeedChange = (evt) => dispatch(setSpeed(+evt.target.value));
+
 
   return (
     <div className="game-controls-wrapper">
@@ -70,8 +71,9 @@ const GameControls = () => {
 
       <div className="button-group">
         <button onClick={onRunningBtnClick}>{isRunning ? "Stop" : "Start"}</button>
-        <button onClick={onPatternLoadBtnClick}>Load Pattern</button>
+        <InputFileReader label="Load RLE Pattern" onFileLoad={onPatternLoaded}/>
       </div>
+
     </div>
   );
 };
