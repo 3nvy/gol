@@ -141,8 +141,8 @@ const Canvas = (props) => {
   };
 
   const getPos = (evt, canvas) => ({
-    x: evt.clientX - canvas.offsetLeft,
-    y: evt.clientY - canvas.offsetTop,
+    x: (evt.changedTouches?.[0].clientX ?? evt.touches?.[0].clientX ?? evt.clientX) - canvas.offsetLeft,
+    y: (evt.changedTouches?.[0].clientY ?? evt.touches?.[0].clientY ?? evt.clientY) - canvas.offsetTop,
   });
 
   const nextCellState = () => {
@@ -204,7 +204,7 @@ const Canvas = (props) => {
     // Only move the grid when we registered a mousedown event
     if (!startPos.current) return;
     let pos = getPos(evt, canvas);
-    calculateDragOffset(evt);
+    calculateDragOffset(pos);
     // Move coordinate system in the same way as the cursor
     ctx.translate(pos.x - startPos.current.x, pos.y - startPos.current.y);
     reDrawCanvas();
@@ -270,11 +270,19 @@ const Canvas = (props) => {
     canvas.addEventListener("mouseup", handleMouseUp);
     canvas.addEventListener("mousemove", handleMouseMove);
 
+    canvas.addEventListener("touchstart", handleMouseDown);
+    canvas.addEventListener("touchend", handleMouseUp);
+    canvas.addEventListener("touchmove", handleMouseMove);
+
     return () => {
       canvas.removeEventListener("contextmenu", handleCanvasClick);
       canvas.removeEventListener("mousedown", handleMouseDown);
       canvas.removeEventListener("mouseup", handleMouseUp);
       canvas.removeEventListener("mousemove", handleMouseMove);
+
+      canvas.removeEventListener("touchstart", handleMouseDown);
+      canvas.removeEventListener("touchend", handleMouseUp);
+      canvas.removeEventListener("touchmove", handleMouseMove);
     };
   }, []);
 
